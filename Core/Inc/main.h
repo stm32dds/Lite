@@ -1,0 +1,132 @@
+/* USER CODE BEGIN Header */
+/**
+  ******************************************************************************
+  * @file           : main.h
+  * @brief          : Header for main.c file.
+  *                   This file contains the common defines of the application.
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
+/* USER CODE END Header */
+
+/* Define to prevent recursive inclusion -------------------------------------*/
+#ifndef __MAIN_H
+#define __MAIN_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* Includes ------------------------------------------------------------------*/
+#include "stm32f1xx_hal.h"
+
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
+
+/* USER CODE END Includes */
+
+/* Exported types ------------------------------------------------------------*/
+/* USER CODE BEGIN ET */
+
+/* USER CODE END ET */
+
+/* Exported constants --------------------------------------------------------*/
+/* USER CODE BEGIN EC */
+#define BUFFER_SIZE 360 //buffer size for DMA Transfer
+/* USER CODE END EC */
+
+/* Exported macro ------------------------------------------------------------*/
+/* USER CODE BEGIN EM */
+
+/* USER CODE END EM */
+
+/* Exported functions prototypes ---------------------------------------------*/
+void Error_Handler(void);
+
+/* USER CODE BEGIN EFP */
+
+/* USER CODE END EFP */
+
+/* Private defines -----------------------------------------------------------*/
+#define LED_0_Pin GPIO_PIN_13
+#define LED_0_GPIO_Port GPIOC
+#define DACA_0_Pin GPIO_PIN_0
+#define DACA_0_GPIO_Port GPIOA
+#define DACA_1_Pin GPIO_PIN_1
+#define DACA_1_GPIO_Port GPIOA
+#define DACA_2_Pin GPIO_PIN_2
+#define DACA_2_GPIO_Port GPIOA
+#define DACA_3_Pin GPIO_PIN_3
+#define DACA_3_GPIO_Port GPIOA
+#define DACA_4_Pin GPIO_PIN_4
+#define DACA_4_GPIO_Port GPIOA
+#define DACA_5_Pin GPIO_PIN_5
+#define DACA_5_GPIO_Port GPIOA
+#define DACA_6_Pin GPIO_PIN_6
+#define DACA_6_GPIO_Port GPIOA
+#define DACA_7_Pin GPIO_PIN_7
+#define DACA_7_GPIO_Port GPIOA
+#define DACB_0_Pin GPIO_PIN_0
+#define DACB_0_GPIO_Port GPIOB
+#define DACB_1_Pin GPIO_PIN_1
+#define DACB_1_GPIO_Port GPIOB
+#define DACB_2_Pin GPIO_PIN_2
+#define DACB_2_GPIO_Port GPIOB
+#define DACB_10_Pin GPIO_PIN_10
+#define DACB_10_GPIO_Port GPIOB
+#define DACB_11_Pin GPIO_PIN_11
+#define DACB_11_GPIO_Port GPIOB
+#define DACB_12_Pin GPIO_PIN_12
+#define DACB_12_GPIO_Port GPIOB
+#define DACB_13_Pin GPIO_PIN_13
+#define DACB_13_GPIO_Port GPIOB
+#define DACB_14_Pin GPIO_PIN_14
+#define DACB_14_GPIO_Port GPIOB
+#define DACB_15_Pin GPIO_PIN_15
+#define DACB_15_GPIO_Port GPIOB
+#define PB_MODE_Pin GPIO_PIN_8
+#define PB_MODE_GPIO_Port GPIOA
+#define PB_MODE_EXTI_IRQn EXTI9_5_IRQn
+#define PB_UP_Pin GPIO_PIN_9
+#define PB_UP_GPIO_Port GPIOA
+#define PB_UP_EXTI_IRQn EXTI9_5_IRQn
+#define PB_DOWN_Pin GPIO_PIN_10
+#define PB_DOWN_GPIO_Port GPIOA
+#define PB_DOWN_EXTI_IRQn EXTI15_10_IRQn
+#define LED_1_Pin GPIO_PIN_15
+#define LED_1_GPIO_Port GPIOA
+#define DACB_3_Pin GPIO_PIN_3
+#define DACB_3_GPIO_Port GPIOB
+#define DACB_4_Pin GPIO_PIN_4
+#define DACB_4_GPIO_Port GPIOB
+#define DACB_5_Pin GPIO_PIN_5
+#define DACB_5_GPIO_Port GPIOB
+#define DACB_6_Pin GPIO_PIN_6
+#define DACB_6_GPIO_Port GPIOB
+#define DACB_7_Pin GPIO_PIN_7
+#define DACB_7_GPIO_Port GPIOB
+#define DACB_8_Pin GPIO_PIN_8
+#define DACB_8_GPIO_Port GPIOB
+#define DACB_9_Pin GPIO_PIN_9
+#define DACB_9_GPIO_Port GPIOB
+/* USER CODE BEGIN Private defines */
+
+/* USER CODE END Private defines */
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __MAIN_H */
+
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
