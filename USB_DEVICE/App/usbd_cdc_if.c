@@ -32,9 +32,10 @@
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-uint8_t  buffer[] = "Hello, World!\r\n";
+//uint8_t  buffer[] = "Hello, World!\r\n";
 //uint32_t NewDataFromUsb = 0;//default init, no data
 uint16_t aOutputWave [BUFFER_SIZE] = {0};
+uint8_t ReturnedCommand;
 /* USER CODE END PV */
 
 /** @addtogroup STM32_USB_OTG_DEVICE_LIBRARY
@@ -265,18 +266,39 @@ static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
   USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
   USBD_CDC_ReceivePacket(&hUsbDeviceFS);
 //  NewDataFromUsb = *Len;
-  if(*Len == 61)
+  if(*Len == 61) // There is data received
   {
-	  __HAL_RCC_TIM1_CLK_DISABLE();//stop clocking interrupt timer
+//	  __HAL_RCC_TIM1_CLK_DISABLE();//stop clocking interrupt timer
 	  // 8 bits buffer to 16 bits buffer transfer
 	 for (int i = 0, j = 0; i < 30; ++i, j+= 2)
 	 {
 		 aOutputWave[i+(UserRxBufferFS[60]*30)] =
 				 (UserRxBufferFS[j] << 8) | UserRxBufferFS[j + 1];
 	 }
-	  CDC_Transmit_FS(buffer, sizeof(buffer));
+//	  CDC_Transmit_FS(buffer, sizeof(buffer));
 //	  NewDataFromUsb = 0;
-	  __HAL_RCC_TIM1_CLK_ENABLE();//start clocking interrupt timer
+//	  __HAL_RCC_TIM1_CLK_ENABLE();//start clocking interrupt timer
+  }
+  if(*Len == 1) // There is command received
+  {
+	  if(UserRxBufferFS[0] == USB_DEVICE_START)
+	  {
+		  __HAL_RCC_TIM1_CLK_ENABLE();//start clocking interrupt timer
+		  ReturnedCommand = USB_DEVICE_START;
+		  CDC_Transmit_FS(&ReturnedCommand, 0x01);
+		  //issue feedback to PC
+	  }
+	  if(UserRxBufferFS[0] == USB_DEVICE_STOP)
+	  {
+		  __HAL_RCC_TIM1_CLK_DISABLE();//stop clocking interrupt timer
+		  ReturnedCommand = USB_DEVICE_STOP;
+		  CDC_Transmit_FS(&ReturnedCommand, 0x01);
+		  //issue feedback to PC
+	  }
+	  if(UserRxBufferFS[0] == USB_DEVICE_TYPE)
+		  ReturnedCommand = USB_DEVICE_TYPE;
+		  CDC_Transmit_FS(&ReturnedCommand, 0x01);
+	  	  // Say to PC that this is "Lite"
   }
   return (USBD_OK);
   /* USER CODE END 6 */

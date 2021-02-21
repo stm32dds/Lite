@@ -124,6 +124,8 @@ int main(void)
   {
 	  HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
 	  HAL_Delay(500);
+//	    uint8_t HiMsg[] = "hello\r\n";
+//	    CDC_Transmit_FS(HiMsg, sizeof(HiMsg));
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -224,9 +226,6 @@ static void MX_TIM1_Init(void)
 
 }
 
-/**
-  * Enable DMA controller clock
-  */
 static void MX_DMA_Init(void)
 {
 
@@ -262,7 +261,9 @@ static void MX_DMA_Init(void)
 
   /*  (Run TIM) */
   __HAL_TIM_ENABLE(&htim1);
+  __HAL_RCC_TIM1_CLK_DISABLE();//stop clocking interrupt timer
 }
+
 
 /**
   * @brief GPIO Initialization Function

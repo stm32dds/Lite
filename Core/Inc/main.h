@@ -42,7 +42,7 @@ extern "C" {
 
 /* Exported constants --------------------------------------------------------*/
 /* USER CODE BEGIN EC */
-#define BUFFER_SIZE 360 //buffer size for DMA Transfer
+
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/
@@ -120,7 +120,10 @@ void Error_Handler(void);
 #define DACB_9_Pin GPIO_PIN_9
 #define DACB_9_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
-
+#define BUFFER_SIZE 360 //buffer size for DMA Transfer
+#define USB_DEVICE_START	0x55
+#define USB_DEVICE_STOP		0xAA
+#define USB_DEVICE_TYPE		0x00
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
