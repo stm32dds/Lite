@@ -34,8 +34,10 @@
 /* Private variables ---------------------------------------------------------*/
 //uint8_t  buffer[] = "Hello, World!\r\n";
 //uint32_t NewDataFromUsb = 0;//default init, no data
-uint16_t aOutputWave [BUFFER_SIZE] = {0};
-uint8_t ReturnedCommand;
+uint16_t aOutputWave [360] = {0};
+uint8_t ReturnedCommand; //State of device = returned command
+uint8_t retWave =0; //flag to return wave
+uint8_t aConfig[8];//array for configuration data
 /* USER CODE END PV */
 
 /** @addtogroup STM32_USB_OTG_DEVICE_LIBRARY
@@ -265,7 +267,6 @@ static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
   /* USER CODE BEGIN 6 */
   USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
   USBD_CDC_ReceivePacket(&hUsbDeviceFS);
-//  NewDataFromUsb = *Len;
   if(*Len == 61) // There is data received
   {
 //	  __HAL_RCC_TIM1_CLK_DISABLE();//stop clocking interrupt timer
@@ -285,8 +286,8 @@ static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
 	  {
 		  __HAL_RCC_TIM1_CLK_ENABLE();//start clocking interrupt timer
 		  ReturnedCommand = USB_DEVICE_START;
-		  CDC_Transmit_FS(&ReturnedCommand, 0x01);
-		  //issue feedback to PC
+		  CDC_Transmit_FS(&ReturnedCommand, 0x01); //issue feedback to PC
+		  retWave = 1; // notification for wave return
 	  }
 	  if(UserRxBufferFS[0] == USB_DEVICE_STOP)
 	  {
@@ -296,9 +297,16 @@ static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
 		  //issue feedback to PC
 	  }
 	  if(UserRxBufferFS[0] == USB_DEVICE_TYPE)
+	  {
 		  ReturnedCommand = USB_DEVICE_TYPE;
 		  CDC_Transmit_FS(&ReturnedCommand, 0x01);
 	  	  // Say to PC that this is "Lite"
+	  }
+  }
+  if(*Len==8) //There is configuration received
+  {
+	  for(int i =0; i<8; ++i)
+		  aConfig[i]= UserRxBufferFS[i];
   }
   return (USBD_OK);
   /* USER CODE END 6 */

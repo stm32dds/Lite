@@ -50,6 +50,17 @@ DMA_HandleTypeDef hdma_tim1_up;
 //extern uint32_t NewDataFromUsb;//0-no new data, <>0 new data, value=New Data lenght
 //extern uint8_t UserRxBufferFS[APP_RX_DATA_SIZE]; //Data that comes from USB
 extern uint16_t aOutputWave [BUFFER_SIZE];
+extern uint8_t retWave;
+extern uint8_t aConfig[8];//array for configuration data
+uint16_t uFrqSP; // set point for Frequency
+uint16_t VppSP; // set point for Amplitude
+uint8_t uOffsSP; // set point for Offset
+uint8_t uPwmSP=50; // set point for PWM on SQUARE Wave
+enum SamplesPerWave  {SPW360, SPW180, SPW90, SPW45, SPW24}; // Samples per wave
+enum AmpPower { x2_0, x1_5, x1_0, x0_5 }; // Amplification
+enum SamplesPerWave eSPW = SPW360;
+enum AmpPower eAmpPow;
+
 /*static const uint16_t aSRC_Const_Buffer[BUFFER_SIZE] =
 {
   0x0102, 0x0304, 0x0506, 0x0708, 0x090A, 0x0B0C, 0x0D0E, 0x0F10,
@@ -111,6 +122,7 @@ int main(void)
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
   /*Square wave generation and put it into aOutputWave */
+  // as default wave on power up
   for (int i = 0; i < BUFFER_SIZE; ++i)
   {
 	  if (i < BUFFER_SIZE/2) aOutputWave[i]=0;
@@ -124,8 +136,67 @@ int main(void)
   {
 	  HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
 	  HAL_Delay(500);
-//	    uint8_t HiMsg[] = "hello\r\n";
-//	    CDC_Transmit_FS(HiMsg, sizeof(HiMsg));
+	  //  uint8_t HiMsg[] = "hello\r\n";
+	    if(retWave==1)
+	    {
+	    	// b[i] = (a[j] << 8) | a[j + 1];
+	        // set point for Frequency
+	    	uFrqSP = (aConfig[0] << 8) | aConfig[1];
+	        // set point for Amplitude
+	    	VppSP = (aConfig[2] << 8) | aConfig[3];
+	        // set point for Offset
+	    	uOffsSP = aConfig[4];
+	        // set point for PWM on SQUARE Wave
+	    	uPwmSP = aConfig[5];
+	        // Samples per wave
+	    	if (eSPW != aConfig[6])
+	    	{
+	    		uint32_t BufLnght;
+	    		HAL_DMA_Abort_IT(htim1.hdma[TIM_DMA_ID_UPDATE]);
+	    		eSPW = aConfig[6];
+	    		if (eSPW == SPW360) BufLnght = 360;
+
+	    		if (eSPW == SPW180)
+	    		{
+	    			for(int i =0;i<180; ++i)
+	    				aOutputWave[i] = aOutputWave[2*i];
+	    			BufLnght = 180;
+	    		}
+
+	    		if (eSPW == SPW90)
+	    		{
+	    			 for(int i =0;i<90; ++i)
+	    			    aOutputWave[i] = aOutputWave[4*i];
+	    			 BufLnght = 90;
+	    		}
+
+	    		if (eSPW == SPW45)
+	    		{
+	    			 for(int i =0;i<45; ++i)
+	    			    aOutputWave[i] = aOutputWave[8*i];
+	    			 BufLnght = 45;
+	    		}
+
+	    		if (eSPW == SPW24)
+	    		{
+	    			 for(int i =0;i<24; ++i)
+	    			    aOutputWave[i] = aOutputWave[15*i];
+	    			 BufLnght = 24;
+	    		}
+
+	    		HAL_DMA_Start_IT(htim1.hdma[TIM_DMA_ID_UPDATE],(uint32_t)&aOutputWave,
+	    		  		(uint32_t)&GPIOB->ODR, BufLnght);
+
+	    	}
+	        // Amplification
+	    	eAmpPow = aConfig[7];
+
+	    	TIM1->ARR = uFrqSP;
+	    	//htim1.Init.Period = uFrqSP;
+//	    	CDC_Transmit_FS(HiMsg, sizeof(HiMsg));
+	    	CDC_Transmit_FS((uint8_t*)aOutputWave, 720);
+	    	retWave =0;
+	    }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -201,7 +272,7 @@ static void MX_TIM1_Init(void)
   htim1.Instance = TIM1;
   htim1.Init.Prescaler = 0; // 1000;
   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim1.Init.Period = 7; //65535;
+  htim1.Init.Period = 100; //7-65535;
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim1.Init.RepetitionCounter = 0;
   htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
