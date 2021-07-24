@@ -50,6 +50,8 @@ extern "C" {
 
 /* USER CODE END EM */
 
+void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
+
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
@@ -60,22 +62,26 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define LED_0_Pin GPIO_PIN_13
 #define LED_0_GPIO_Port GPIOC
-#define DACA_0_Pin GPIO_PIN_0
+#define EX0_START_Pin GPIO_PIN_0
+#define EX0_START_GPIO_Port GPIOA
+#define EX0_START_EXTI_IRQn EXTI0_IRQn
+#define EX1_UP_Pin GPIO_PIN_1
+#define EX1_UP_GPIO_Port GPIOA
+#define EX1_UP_EXTI_IRQn EXTI1_IRQn
+#define EX2_DOWN_Pin GPIO_PIN_2
+#define EX2_DOWN_GPIO_Port GPIOA
+#define EX2_DOWN_EXTI_IRQn EXTI2_IRQn
+#define EX3_SEL_Pin GPIO_PIN_3
+#define EX3_SEL_GPIO_Port GPIOA
+#define EX3_SEL_EXTI_IRQn EXTI3_IRQn
+#define DACA_0_Pin GPIO_PIN_4
 #define DACA_0_GPIO_Port GPIOA
-#define DACA_1_Pin GPIO_PIN_1
+#define DACA_1_Pin GPIO_PIN_5
 #define DACA_1_GPIO_Port GPIOA
-#define DACA_2_Pin GPIO_PIN_2
+#define DACA_2_Pin GPIO_PIN_6
 #define DACA_2_GPIO_Port GPIOA
-#define DACA_3_Pin GPIO_PIN_3
+#define DACA_3_Pin GPIO_PIN_7
 #define DACA_3_GPIO_Port GPIOA
-#define DACA_4_Pin GPIO_PIN_4
-#define DACA_4_GPIO_Port GPIOA
-#define DACA_5_Pin GPIO_PIN_5
-#define DACA_5_GPIO_Port GPIOA
-#define DACA_6_Pin GPIO_PIN_6
-#define DACA_6_GPIO_Port GPIOA
-#define DACA_7_Pin GPIO_PIN_7
-#define DACA_7_GPIO_Port GPIOA
 #define DACB_0_Pin GPIO_PIN_0
 #define DACB_0_GPIO_Port GPIOB
 #define DACB_1_Pin GPIO_PIN_1
@@ -94,17 +100,12 @@ void Error_Handler(void);
 #define DACB_14_GPIO_Port GPIOB
 #define DACB_15_Pin GPIO_PIN_15
 #define DACB_15_GPIO_Port GPIOB
-#define PB_MODE_Pin GPIO_PIN_8
-#define PB_MODE_GPIO_Port GPIOA
-#define PB_MODE_EXTI_IRQn EXTI9_5_IRQn
-#define PB_UP_Pin GPIO_PIN_9
-#define PB_UP_GPIO_Port GPIOA
-#define PB_UP_EXTI_IRQn EXTI9_5_IRQn
-#define PB_DOWN_Pin GPIO_PIN_10
-#define PB_DOWN_GPIO_Port GPIOA
-#define PB_DOWN_EXTI_IRQn EXTI15_10_IRQn
-#define LED_1_Pin GPIO_PIN_15
-#define LED_1_GPIO_Port GPIOA
+#define DACA_4_Pin GPIO_PIN_8
+#define DACA_4_GPIO_Port GPIOA
+#define DACA_5_Pin GPIO_PIN_9
+#define DACA_5_GPIO_Port GPIOA
+#define LED_2_Pin GPIO_PIN_10
+#define LED_2_GPIO_Port GPIOA
 #define DACB_3_Pin GPIO_PIN_3
 #define DACB_3_GPIO_Port GPIOB
 #define DACB_4_Pin GPIO_PIN_4
